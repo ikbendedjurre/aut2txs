@@ -16,7 +16,7 @@ public class Aut2Txs {
 			outs.add(o);
 		}
 		
-		labelMap = new LabelMap("p", "A", "x", "state");
+		labelMap = new LabelMap("p", "A", "state");
 	}
 	
 	private void print(String format, Object... args) {
@@ -32,7 +32,7 @@ public class Aut2Txs {
 		labelMap.addFile(file);
 		
 		for (String chanName : labelMap.getChannels()) {
-			print("-- %s originates from %s", chanName, labelMap.backwards(chanName));
+			print("-- \"%s\" originates from \"%s\"", chanName, labelMap.backwards(chanName));
 		}
 		
 		print("");
@@ -42,7 +42,7 @@ public class Aut2Txs {
 		print("ENDDEF");
 		print("");
 		
-		print("PROCDEF p [] (state :: Int) ::=");
+		print("PROCDEF p [A :: String] (state :: Int) ::=");
 		
 		if (file.getTransitions().size() > 0) {
 			print("\t   %s", getTransitionText(file.getTransitions().get(0)));
@@ -58,14 +58,14 @@ public class Aut2Txs {
 		print("ENDDEF");
 		print("");
 		
-		print("MODELDEF Model");
+		print("MODELDEF Model ::=");
 		print("CHAN IN");
 		print("CHAN OUT A");
-		print("BEHAVIOR p [] (0)");
+		print("BEHAVIOUR p [A] (0)");
 		print("ENDDEF");
 	}
 	
 	private String getTransitionText(Transition transition) {
-		return String.format("A ? x [(state == %d) /\\ (x == \"%s\")] >-> p [] (%d)", transition.getStartState(), labelMap.getOrCreate(transition.getLabel()), transition.getEndState());
+		return String.format("A ! \"%s\" [[ state == %d ]] >-> p [A] (%d)", labelMap.getOrCreate(transition.getLabel()), transition.getStartState(), transition.getEndState());
 	}
 }

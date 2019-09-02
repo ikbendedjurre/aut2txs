@@ -43,7 +43,7 @@ public class LabelMap {
 			"OUT",
 			"SYNC",
 			"CHAN",
-			"BEHAVIOR",
+			"BEHAVIOUR",
 			"IF",
 			"THEN",
 			"ELSE",
