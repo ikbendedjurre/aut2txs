@@ -1,0 +1,7 @@
+*.prefs
+source/eclipse/org.aut2txs.tool/src-gen/
+source/eclipse/org.aut2txs.tool/xtend-gen/
+source/eclipse/org.aut2txs.tool.ui/xtend-gen/
+source/eclipse/org.aut2txs.tool.ui/src-gen/
+source/eclipse/org.aut2txs.tool.ide/src-gen/
+source/eclipse/org.aut2txs.tool/.antlr-generator-3.2.0-patch.jar

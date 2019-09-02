@@ -1,0 +1,25 @@
+grammar org.aut2txs.tool.AldebaranLang hidden(WS, ML_COMMENT, SL_COMMENT)
+
+generate aldebaranLang "http://www.aut2txs.org/tool/AldebaranLang"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+File:
+	'des' '(' firstState=NR ',' transitionCount=NR ',' stateCount=NR ')'
+	(NEWLINE (transitions+=Transition)?)*
+;
+
+Transition:
+	'(' startState=NR ',' label=LABEL ',' endState=NR ')'
+;
+
+terminal NR returns ecore::EInt: ('0'..'9')+;
+terminal LABEL returns ecore::EString:
+			'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"'
+		;
+terminal ML_COMMENT : '/*' -> '*/';
+terminal NEWLINE    : ('\r'? '\n')?;
+terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
+terminal WS         : (' '|'\t'|'\r'|'\n')+;
+terminal ANY_OTHER: .;
+
