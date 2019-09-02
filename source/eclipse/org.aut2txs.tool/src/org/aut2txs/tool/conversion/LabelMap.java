@@ -60,6 +60,9 @@ public class LabelMap {
 			"PORT",
 			"ENCODE",
 			"DECODE",
+			"Int",
+			"String",
+			"Bool",
 	};
 	
 	public int size() {

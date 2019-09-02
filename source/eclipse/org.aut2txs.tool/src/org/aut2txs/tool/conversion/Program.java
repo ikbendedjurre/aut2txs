@@ -1,8 +1,8 @@
 package org.aut2txs.tool.conversion;
 
+import java.io.*;
 import java.util.*;
 
-import org.aut2txs.tool.aldebaranLang.File;
 import org.eclipse.emf.ecore.EObject;
 
 public class Program {
@@ -19,9 +19,21 @@ public class Program {
 		for (EObject obj : r) {
 			System.out.println("\tFound: " + obj.getClass().getName());
 			
-			if (obj instanceof File) {
-				Aut2Txs converter = new Aut2Txs(System.out);
-				converter.print((File)obj);
+			if (obj instanceof org.aut2txs.tool.aldebaranLang.File) {
+				try {
+					File destFile = new File(args[0] + ".txs");
+					PrintStream ps = new PrintStream(destFile);
+					
+					Aut2Txs converter = new Aut2Txs(System.out, ps);
+					converter.print((org.aut2txs.tool.aldebaranLang.File)obj);
+					
+					ps.flush();
+					ps.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					
+				}
 			}
 		}
 	}

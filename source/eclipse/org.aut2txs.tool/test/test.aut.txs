@@ -1,0 +1,35 @@
+-- EAT_P2 originates from eat(p2)
+-- EAT_P1 originates from eat(p1)
+-- LOCK_P2_F2 originates from lock(p2, f2)
+-- LOCK_P1_F1 originates from lock(p1, f1)
+-- FREE_P1_F1 originates from free(p1, f1)
+-- LOCK_P2_F1 originates from lock(p2, f1)
+-- FREE_P2_F2 originates from free(p2, f2)
+-- FREE_P1_F2 originates from free(p1, f2)
+-- FREE_P2_F1 originates from free(p2, f1)
+-- LOCK_P1_F2 originates from lock(p1, f2)
+
+CHANDEF Chans ::=
+	A :: String
+ENDDEF
+
+PROCDEF p [] (state :: Int) ::=
+	   A ? x [(state == 0) /\ (x == "LOCK_P2_F2")] >-> p [] (1)
+	## A ? x [(state == 0) /\ (x == "LOCK_P1_F1")] >-> p [] (2)
+	## A ? x [(state == 1) /\ (x == "LOCK_P1_F1")] >-> p [] (3)
+	## A ? x [(state == 1) /\ (x == "LOCK_P2_F1")] >-> p [] (4)
+	## A ? x [(state == 2) /\ (x == "LOCK_P2_F2")] >-> p [] (3)
+	## A ? x [(state == 2) /\ (x == "LOCK_P1_F2")] >-> p [] (5)
+	## A ? x [(state == 4) /\ (x == "EAT_P2")] >-> p [] (6)
+	## A ? x [(state == 5) /\ (x == "EAT_P1")] >-> p [] (7)
+	## A ? x [(state == 6) /\ (x == "FREE_P2_F2")] >-> p [] (8)
+	## A ? x [(state == 7) /\ (x == "FREE_P1_F1")] >-> p [] (9)
+	## A ? x [(state == 8) /\ (x == "FREE_P2_F1")] >-> p [] (0)
+	## A ? x [(state == 9) /\ (x == "FREE_P1_F2")] >-> p [] (0)
+ENDDEF
+
+MODELDEF Model
+CHAN IN
+CHAN OUT A
+BEHAVIOR p [] (0)
+ENDDEF
